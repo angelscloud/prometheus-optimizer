@@ -33,7 +33,6 @@ def k8s_config():
     core_v1 = core_v1_api.CoreV1Api()
     return core_v1
 
-
 def prometheus_pod_discovery(api_instance, namespace : str, labels : str) -> dict():
     ret = api_instance.list_namespaced_pod(namespace=namespace, label_selector=labels)
     for item in ret.items:
@@ -117,12 +116,10 @@ def send_file_to_slack(file_path, channel_id, token):
         print(f"Error uploading {file_path}: {e}")
 
 def read_metrics(file_path):
-    """Read metrics from a file and return them as a list."""
     with open(file_path, 'r') as file:
         return [line.strip() for line in file if line.strip()]
 
 def group_metrics_by_prefix(metrics):
-    """Group metrics by the first word of the metric name."""
     groups = {}
     for metric in metrics:
         prefix = metric.split('_')[0]
@@ -133,7 +130,6 @@ def group_metrics_by_prefix(metrics):
     return groups
 
 def generate_relabel_configs(groups):
-    """Generate relabel configs for each group of metrics."""
     relabel_configs = []
     for prefix, metrics in groups.items():
         regex = "|".join([re.escape(metric) for metric in metrics])
@@ -146,7 +142,6 @@ def generate_relabel_configs(groups):
     return relabel_configs
 
 def write_config_to_file(config, file_path):
-    """Write Prometheus config to a YAML file."""
     with open(file_path, 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
     print(f"Config written to {file_path}")
