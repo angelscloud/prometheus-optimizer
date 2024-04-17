@@ -5,7 +5,6 @@ cronJob:
     tag: latest
     pullPolicy: Always
 configMap:
-  name: prometheus-optimizer-config
   data:
     grafana:
       enabled: true
