@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore: [README.md, deployment]
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -32,6 +30,9 @@ jobs:
           tags: ghcr.io/venomseven/prometheus-optimizer:latest
   helm-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v2
