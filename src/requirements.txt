@@ -1,3 +1,0 @@
-pyyaml
-kubernetes
-slack-sdk==3.27.1
