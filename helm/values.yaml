@@ -4,6 +4,8 @@ cronJob:
     repository: registry.gitlab.com/picsart/devops/monitoring/monitoring-tools/prometheus-optimizer
     tag: latest
     pullPolicy: Always
+serviceAccount:
+  name: optimizer-service-account
 configMap:
   data:
     grafana:

@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "prometheus-optimizer.fullname" . }}
+  name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app: prometheus-optimizer
@@ -25,6 +25,6 @@ spec:
           volumes:
             - name: config-volume
               configMap:
-                name: {{ .Values.configMap.name }}
+                name: prometheus-optimizer-config
           restartPolicy: OnFailure
           serviceAccountName: {{ .Values.serviceAccount.name }}
