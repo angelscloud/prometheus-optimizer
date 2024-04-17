@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
+          file: src/Dockerfile
           push: true
           tags: ghcr.io/venomseven/prometheus-optmizier:latest
