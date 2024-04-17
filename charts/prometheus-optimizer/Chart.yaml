@@ -1,6 +1,6 @@
 apiVersion: v2
 name: prometheus-optimizer
-description: A Helm chart for prometheus-optmizier
+description: A Helm chart for prometheus-optimizer
 type: application
-version: 0.1.0
+version: 0.1.3
 appVersion: "1.0"
