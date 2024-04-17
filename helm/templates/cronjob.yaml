@@ -1,11 +1,12 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: prometheus-optimizer-cronjob
+  name: {{ include "prometheus-optimizer.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: prometheus-optimizer
 spec:
-  schedule: "0 0 1 * *"
+  schedule: {{ .Values.cronJob.schedule }}
   jobTemplate:
     spec:
       template:
@@ -15,8 +16,8 @@ spec:
         spec:
           containers:
             - name: prometheus-optimizer
-              image: ghcr.io/venomseven/prometheus-optimizer:latest
-              imagePullPolicy: Always
+              image: "{{ .Values.cronJob.image.repository }}:{{ .Values.cronJob.image.tag }}"
+              imagePullPolicy: {{ .Values.cronJob.image.pullPolicy }}
               volumeMounts:
                 - name: config-volume
                   mountPath: /usr/src/app/config.yaml
@@ -24,6 +25,6 @@ spec:
           volumes:
             - name: config-volume
               configMap:
-                name: prometheus-optimizer-config
+                name: {{ .Values.configMap.name }}
           restartPolicy: OnFailure
-          serviceAccountName: optimizer-service-account
+          serviceAccountName: {{ .Values.serviceAccount.name }}

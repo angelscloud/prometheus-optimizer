@@ -1,0 +1,25 @@
+cronJob:
+  schedule: "0 0 1 * *"
+  image:
+    repository: registry.gitlab.com/picsart/devops/monitoring/monitoring-tools/prometheus-optimizer
+    tag: latest
+    pullPolicy: Always
+configMap:
+  name: prometheus-optimizer-config
+  data:
+    grafana:
+      enabled: true
+      api_token: "your-token-here"
+      address: "http://grafana.grafana.svc:3000"
+    prometheus_analysis:
+      enabled: true
+      address: "http://thanos-query-frontend.thanos.svc:9090"
+    fetch_rules:
+      enabled: true
+      prometheus_discovery:
+        namespace: "prometheus"
+        labels: "app=prometheus"
+    slack:
+      token: "xoxb-your-slack-token-here"
+      channel: "your-slack-channel-name"
+    mark_as_used_metric: "^maas.*"
