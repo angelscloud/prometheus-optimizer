@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-optimizer-config
+data:
+  config.yaml: |
+    grafana:
+      enabled: true
+      api_token: "token"
+      address: "http://grafana.grafana.svc:3000"
+    prometheus_analysis:
+      enabled: true
+      address: "http://thanos-query-frontend.thanos.svc:9090"
+    fetch_rules:
+      enabled: true
+      prometheus_discovery:
+        namespace: "promxy"
+        labels: "app=promxy"
+    slack:
+      token: "xoxb-token"
+      channel: "channel_name"    
+    mark_as_used_metric: "^maas.*"
