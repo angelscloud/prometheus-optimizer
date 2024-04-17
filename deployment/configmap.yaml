@@ -14,8 +14,8 @@ data:
     fetch_rules:
       enabled: true
       prometheus_discovery:
-        namespace: "promxy"
-        labels: "app=promxy"
+        namespace: "prometheus"
+        labels: "app=prometheus"
     slack:
       token: "xoxb-token"
       channel: "channel_name"    
