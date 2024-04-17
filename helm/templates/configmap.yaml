@@ -4,4 +4,4 @@ metadata:
   name: prometheus-optimizer-config
 data:
   config.yaml: |
-    {{- toYaml .Values.configMap.data.configuration | nindent 4 }}
+    {{- toYaml .Values.configMap.data | nindent 4 }}
