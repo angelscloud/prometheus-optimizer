@@ -1,6 +1,7 @@
 import re
 import os
 import subprocess
+import time
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import yaml
@@ -191,3 +192,4 @@ if __name__ == "__main__":
     }
     write_config_to_file(prometheus_config, 'prometheus_config.yaml')
     send_file_to_slack('prometheus_config.yaml', slack_channel, slack_token)
+    time.sleep(1000)
