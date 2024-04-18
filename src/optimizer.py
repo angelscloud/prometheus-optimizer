@@ -104,17 +104,11 @@ def copy_file_from_pod(api_instance, namespace, pod_name, container, source_path
                 fname = member.name.rsplit('/', 1)[1]
                 tar.makefile(member, destination_path + '/' + fname)
 
-def unique_name_replacer(file):
-    text = ""
+def unique_name_replacer(text):
     def replacer(match):
-        nonlocal file
-        with open(file, "r") as f:
-            text = f.read()
         unique_number = ''.join(choices(digits, k=20))
         return f"- name: {unique_number}"
-    result = re.sub(r"- name:", replacer, text)
-    with open(file, "w") as f:
-        f.write(result)
+    return re.sub(r"- name:", replacer, text)
 
 def analyze_rules_with_mimirtool():
     global rules_file_path
@@ -200,11 +194,14 @@ if __name__ == "__main__":
         if rules:
             exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> /tmp/{rules_file_path}.tmp ; done && sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' /tmp/{rules_file_path}.tmp 1> /tmp/{rules_file_path} && rm /tmp/{rules_file_path}.tmp")
             copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}", destination_path="/usr/src/app")
-            unique_name_replacer(rules_file_path)
+            with open(rules_file_path, "r") as f:
+                a = f.read()
+            result = unique_name_replacer(a)
+            with open(rules_file_path) as f:
+                f.write(result)
             analyze_rules_with_mimirtool()
         else:
             print("Skipping, no rules found in pod.")
-
     if yaml_config['prometheus_analysis']['enabled']:
         PROMETHEUS_ADDRESS = yaml_config['prometheus_analysis']['address']
         analyze_prometheus_metrics()
@@ -214,7 +211,6 @@ if __name__ == "__main__":
         mark_as_used(mark_as_used_metric)
     send_file_to_slack('used_metrics.txt', slack_channel, slack_token)
     send_file_to_slack('unused_metrics.txt', slack_channel, slack_token)
-
     unused_metrics = read_metrics('unused_metrics.txt')
     groups = group_metrics_by_prefix(unused_metrics)
     relabel_configs = generate_relabel_configs(groups)
