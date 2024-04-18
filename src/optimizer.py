@@ -194,6 +194,7 @@ if __name__ == "__main__":
         rules = lookup_prometheus_rules(data.get("pod_ip"))
         if rules:
             exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> {rules_file_path}.tmp ; done && sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' {rules_file_path}.tmp 1> {rules_file_path} && rm {rules_file_path}.tmp")
+            print("copying file")
             copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}", destination_path="/usr/src/app")
             analyze_rules_with_mimirtool()
         else:
