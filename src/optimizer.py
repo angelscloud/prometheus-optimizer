@@ -47,7 +47,8 @@ def prometheus_pod_discovery(api_instance, namespace : str, labels : str) -> dic
 def lookup_prometheus_rules(prom_ip):
     r = requests.get(f"http://{prom_ip}:9090/api/v1/rules")
     r = r.json()
-    files = [i.get("file") for i in r.get("data").get("groups")]
+    files = {i.get("file") for i in r.get("data").get("groups")}
+    files = list(files)
     return " ".join(files)
 
 def exec_command(api_instance, namespace, pod_name, container, cmd):
