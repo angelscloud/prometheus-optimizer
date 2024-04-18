@@ -12,10 +12,12 @@ from kubernetes import config
 from kubernetes.client import Configuration
 from kubernetes.client.api import core_v1_api
 from kubernetes.stream import stream
+from tempfile import TemporaryFile
+import tarfile
 
 with open('config.yaml') as f:
     yaml_config = yaml.safe_load(f)
-rules_file_path = '/usr/src/app/prometheus-rules.yaml'
+rules_file_path = 'prometheus-rules.yaml'
 
 def analyze_grafana_metrics():
     print("Analyzing Grafana")
@@ -72,9 +74,36 @@ def exec_command(api_instance, namespace, pod_name, container, cmd):
     if resp.returncode != 0:
         raise Exception("Failed to execute command")
 
-def write_result_in_file(file_content : str):
-    with open(rules_file_path, "w") as f:
-        f.write(file_content)
+def copy_file_from_pod(api_instance, namespace, pod_name, container, source_path, destination_path):
+    exec_cmd = ['tar', 'cf', '-', source_path]
+    with TemporaryFile() as tar_buffer:
+        resp = stream(api_instance.connect_get_namespaced_pod_exec,
+                      pod_name,
+                      namespace,
+                      container=container,
+                      command=exec_cmd,
+                      stderr=True, stdin=False,
+                      stdout=True, tty=False,
+                      _preload_content=False)
+
+        while resp.is_open():
+            resp.update(timeout=1)
+            if resp.peek_stdout():
+                out = resp.read_stdout()
+                tar_buffer.write(out.encode('utf-8'))
+            if resp.peek_stderr():
+                pass
+        resp.close()
+
+        tar_buffer.flush()
+        tar_buffer.seek(0)
+
+        with tarfile.open(fileobj=tar_buffer, mode='r:') as tar:
+            for member in tar.getmembers():
+                if member.isdir():
+                    continue
+                fname = member.name.rsplit('/', 1)[1]
+                tar.makefile(member, destination_path + '/' + fname)
 
 def unique_name_replacer(text):
     def replacer(match):
@@ -164,9 +193,8 @@ if __name__ == "__main__":
         data = prometheus_pod_discovery(k8s_api, namespace=namespace, labels=labels)
         rules = lookup_prometheus_rules(data.get("pod_ip"))
         if rules:
-            result = exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> /tmp/prometheus-temp-rules.yaml ; done | sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' /tmp/prometheus-temp-rules.yaml ; cat /tmp/prometheus-temp-rules.yaml\n")
-            result = unique_name_replacer(result)
-            write_result_in_file(result)
+            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> {rules_file_path}.tmp ; done && sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' {rules_file_path}.tmp 1> {rules_file_path} && rm {rules_file_path}.tmp")
+            copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}", destination_path="/usr/src/app")
             analyze_rules_with_mimirtool()
         else:
             print("Skipping, no rules found in pod.")
