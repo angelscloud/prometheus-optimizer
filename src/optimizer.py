@@ -192,10 +192,10 @@ if __name__ == "__main__":
         data = prometheus_pod_discovery(k8s_api, namespace=namespace, labels=labels)
         rules = lookup_prometheus_rules(data.get("pod_ip"))
         if rules:
-            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> /tmp/{rules_file_path} ; done")
-            copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}", destination_path="/usr/src/app")
-            os.system(f"yamlfmt /usr/src/app/{rules_file_path}")
-            os.system(f"sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' /usr/src/app/{rules_file_path}.tmp 1> /usr/src/app/{rules_file_path} && rm /usr/src/app/{rules_file_path}.tmp")
+            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> /tmp/{rules_file_path}.tmp ; done")
+            copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}.tmp", destination_path="/usr/src/app")
+            os.system(f"yamlfmt /usr/src/app/{rules_file_path}.tmp")
+            os.system(f"sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' /usr/src/app/{rules_file_path}.tmp 1> /usr/src/app/{rules_file_path}")
             with open(rules_file_path, "r") as f:
                 a = f.read()
             result = unique_name_replacer(a)
