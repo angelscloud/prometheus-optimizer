@@ -3,6 +3,16 @@ entries:
   prometheus-optimizer:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2024-04-22T09:11:16.748184234Z"
+    description: A Helm chart for prometheus-optimizer
+    digest: 65d62e559844ab622e26e16340d5e17c68fd72d969ae8eba63ea92981b883a24
+    name: prometheus-optimizer
+    type: application
+    urls:
+    - https://github.com/venomseven/prometheus-optimizer/releases/download/prometheus-optimizer-0.2.3/prometheus-optimizer-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2024-04-22T08:05:20.556631483Z"
     description: A Helm chart for prometheus-optimizer
     digest: da5f04f553809f3986bef549ac9cc60d200a412c478bc4480f1ab01cf423fcb6
