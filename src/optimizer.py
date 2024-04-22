@@ -197,7 +197,7 @@ if __name__ == "__main__":
             with open(rules_file_path, "r") as f:
                 a = f.read()
             result = unique_name_replacer(a)
-            with open(rules_file_path) as f:
+            with open(rules_file_path, "w") as f:
                 f.write(result)
             analyze_rules_with_mimirtool()
         else:
