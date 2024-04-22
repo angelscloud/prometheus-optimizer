@@ -8,7 +8,7 @@ RUN apt update -y && \
     apt install curl jq -y && \
     curl -L https://github.com/google/yamlfmt/releases/download/v0.11.0/yamlfmt_0.11.0_Linux_x86_64.tar.gz -o yamlfmt.tar.gz && \
     tar xzf yamlfmt.tar.gz && \
-    mv yamlfmt /usr/local/bin/yamlfmtRUN chmod +x /usr/local/bin/yamlfmt
+    mv yamlfmt /usr/local/bin/yamlfmt
 RUN chmod +x /usr/local/bin/mimirtool
 RUN chmod +x /usr/local/bin/yamlfmt
 EXPOSE 80
