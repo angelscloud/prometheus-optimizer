@@ -112,8 +112,7 @@ def unique_name_replacer(text):
 
 def analyze_rules_with_mimirtool():
     global rules_file_path
-    subprocess.run(["mimirtool", "analyze", "rule-file", f"{rules_file_path}/*"])
-
+    os.system(f"mimirtool analyze rule-file {rules_file_path}/*")
 def analyze_prometheus_metrics():
     print("Analyzing Prometheus")
     subprocess.run(["mimirtool", "analyze", "prometheus", "--address", PROMETHEUS_ADDRESS])
