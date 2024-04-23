@@ -17,7 +17,7 @@ import tarfile
 
 with open('config.yaml') as f:
     yaml_config = yaml.safe_load(f)
-rules_file_path = 'prometheus-rules.yaml'
+rules_file_path = '/tmp/prometheus-rules'
 
 def analyze_grafana_metrics():
     print("Analyzing Grafana")
@@ -112,7 +112,7 @@ def unique_name_replacer(text):
 
 def analyze_rules_with_mimirtool():
     global rules_file_path
-    subprocess.run(["mimirtool", "analyze", "rule-file", f"/usr/src/app/{rules_file_path}"])
+    subprocess.run(["mimirtool", "analyze", "rule-file", f"{rules_file_path}/*"])
 
 def analyze_prometheus_metrics():
     print("Analyzing Prometheus")
@@ -192,15 +192,8 @@ if __name__ == "__main__":
         data = prometheus_pod_discovery(k8s_api, namespace=namespace, labels=labels)
         rules = lookup_prometheus_rules(data.get("pod_ip"))
         if rules:
-            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"for i in {rules} ; do cat $i >> /tmp/{rules_file_path}.tmp ; done")
-            copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"/tmp/{rules_file_path}.tmp", destination_path="/usr/src/app")
-            os.system(f"yamlfmt /usr/src/app/{rules_file_path}.tmp")
-            os.system(f"sed -e 's/groups://g' -E -e 's/(^#.+)//g' -e '1s/^/groups:/' -e '/^\s*$/d' /usr/src/app/{rules_file_path}.tmp 1> /usr/src/app/{rules_file_path}")
-            with open(rules_file_path, "r") as f:
-                a = f.read()
-            result = unique_name_replacer(a)
-            with open(rules_file_path, "w") as f:
-                f.write(result)
+            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"mkdir {rules_file_path} && for i in {rules} ; do mv $i {rules_file_path}")
+            copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"{rules_file_path}", destination_path=rules_file_path)
             analyze_rules_with_mimirtool()
         else:
             print("Skipping, no rules found in pod.")
