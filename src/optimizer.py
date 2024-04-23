@@ -192,7 +192,7 @@ if __name__ == "__main__":
         data = prometheus_pod_discovery(k8s_api, namespace=namespace, labels=labels)
         rules = lookup_prometheus_rules(data.get("pod_ip"))
         if rules:
-            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"mkdir {rules_file_path} && for i in {rules} ; do mv $i {rules_file_path}")
+            exec_command(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), cmd=f"mkdir {rules_file_path} && for i in {rules} ; do cp $i {rules_file_path}")
             copy_file_from_pod(k8s_api, namespace=data.get("namespace"), pod_name=data.get("pod_name"), container=data.get("container"), source_path=f"{rules_file_path}", destination_path=rules_file_path)
             analyze_rules_with_mimirtool()
         else:
