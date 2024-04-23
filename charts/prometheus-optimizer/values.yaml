@@ -1,5 +1,5 @@
 cronJob:
-  schedule: "0 0 1 * *"
+  schedule: "0 6 1 * *"
   image:
     repository: ghcr.io/venomseven/prometheus-optimizer
     tag: latest
