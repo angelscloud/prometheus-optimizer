@@ -1,26 +1,40 @@
+# Configuration for the cron job schedule and image details.
 cronJob:
-  schedule: "0 6 1 * *"
+  schedule: "0 6 1 * *"  # Run at 06:00 on the first day of every month.
   image:
-    repository: ghcr.io/venomseven/prometheus-optimizer
-    tag: latest
-    pullPolicy: Always
+    repository: ghcr.io/venomseven/prometheus-optimizer  # Image repository.
+    tag: latest  # Use the latest image tag.
+    pullPolicy: Always  # Always pull the latest image.
+
+# Service Account configuration for Kubernetes.
 serviceAccount:
-  name: prometheus-optimizer-service-account
+  name: prometheus-optimizer-service-account  # Name of the service account to use.
+
+# ConfigMap settings containing operational configurations for Prometheus Optimizer.
 configMap:
   data:
+    # Grafana configuration details.
     grafana:
-      enabled: true
-      api_token: "your-token-here"
-      address: "http://grafana.grafana.svc:3000"
+      enabled: true  # Enable integration with Grafana.
+      api_token: "your-token-here"  # Service Account/API token for Grafana with necessary permissions.
+      address: "http://grafana.grafana.svc:3000"  # URL of the Grafana service.
+
+    # Configuration for Prometheus analysis.
     prometheus_analysis:
-      enabled: true
-      address: "http://thanos-query-frontend.thanos.svc:9090"
+      enabled: true  # Enable analysis of Prometheus data.
+      address: "http://thanos-query-frontend.thanos.svc:9090"  # URL of the Prometheus/Thanos.
+
+    # Rules for fetching Prometheus metrics.
     fetch_rules:
-      enabled: true
+      enabled: true  # Enable rule fetching.
       prometheus_discovery:
-        namespace: "prometheus"
-        labels: "app=prometheus"
+        namespace: "prometheus"  # Kubernetes namespace where Prometheus is deployed.
+        labels: "app=prometheus"  # Labels used to discover Prometheus pods.
+
+    # Slack configuration for sending notifications or reports.
     slack:
-      token: "xoxb-your-slack-token-here"
-      channel: "your-slack-channel-name"
+      token: "xoxb-your-slack-token-here"  # Slack bot token with files:write permissions.
+      channel: "your-slack-channel-name"  # Slack channel to send reports.
+
+    # Optional: Regex pattern for marking metrics that appear unused but should be retained.
     mark_as_used_metric: "^maas.*"

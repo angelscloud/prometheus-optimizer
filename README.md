@@ -14,20 +14,37 @@ Prometheus Optimizer enhances Prometheus monitoring by optimizing configuration 
 
 ## Getting Started
 ### Prerequisites
-- Kubernetes cluster with Helm installed
-- Prometheus setup within the cluster
+- Kubernetes cluster with Helm installed.
+- Prometheus setup within the cluster.
+- Access to a Grafana instance with a service account token for read-only access.
+- Slack bot with `files:write` permission for report integration.
 
 ### Installation
-Clone the repository and deploy using Helm:
+To install Prometheus Optimizer, add the Helm repository and deploy the chart to your Kubernetes cluster:
 ```bash
-helm repo add prometheus-optimizer https://venomseven.github.io/prometheus-optimizer/ 
+helm repo add prometheus-optimizer https://venomseven.github.io/prometheus-optimizer/
 helm install prometheus-optimizer prometheus-optimizer/prometheus-optimizer
 ```
+
+#### Integrating Slack for Reports
+To receive optimization reports directly in your Slack channel:
+
+- Create a Slack App and enable incoming webhooks.
+- Add files:write permission to allow file uploads.
+- Configure the webhook URL in your values.yaml.
+
+#### Setting Up Grafana Service Accounts
+Ensure each Grafana organization has a service account with at least Viewer access:
+
+- Log into Grafana and navigate to Administration > Users and access >  Service Accounts.
+- Create a new Token with Viewer permissions.
+- Specify the service account token in your values.yaml for each Grafana organization.
+
 ### Configuration
  Customize your deployments by modifying the values.yaml file to fit your specific monitoring requirements.
 
 ### Usage
-The optimizer provides detailed reports on potential optimizations and the specific configurations needed to implement them, simplifying the process of enhancing your Prometheus setup.
+Once deployed, Prometheus Optimizer will begin to analyze Prometheus configurations, including recording rules, alert rules, and Grafana dashboards. Detailed reports on potential optimizations are provided, simplifying the process of enhancing your monitoring setup.
 
 ## Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
@@ -38,7 +55,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 venomseven
 
-Project Link: https://github.com/venomseven/prometheus-optimizer
+**Project Link:** https://github.com/venomseven/prometheus-optimizer
 
 ## Acknowledgements
 - **Prometheus**
@@ -54,5 +71,3 @@ Project Link: https://github.com/venomseven/prometheus-optimizer
 - **License**: Notes the project's license.
 - **Contact**: Provides a method for others to reach out or contribute.
 - **Acknowledgements**: Credits to tools or libraries used.
-
-This README template is structured to provide all the necessary information for users and potential contributors, ensuring they understand the purpose, usage, and how to get involved with the project.
