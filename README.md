@@ -5,9 +5,6 @@
 ![Github stars](https://badgen.net/github/stars/venomseven/prometheus-optimizer?icon=github&label=stars)
 ![Github forks](https://badgen.net/github/forks/venomseven/prometheus-optimizer?icon=github&label=forks)
 ![Github issues](https://img.shields.io/github/issues/venomseven/prometheus-optimizer)
-[![Docker Stars](https://badgen.net/docker/stars/venomseven/prometheus-optimizer?icon=docker&label=stars)](https://hub.docker.com/r/venomseven/prometheus-optimizer/)
-[![Docker Pulls](https://badgen.net/docker/pulls/venomseven/prometheus-optimizer?icon=docker&label=pulls)](https://hub.docker.com/r/venomseven/prometheus-optimizer/)
-[![Docker Image Size](https://badgen.net/docker/size/venomseven/prometheus-optimizer?icon=docker&label=image%20size)](https://hub.docker.com/r/venomseven/prometheus-optimizer/)
 
 ## Overview
 Prometheus Optimizer enhances Prometheus monitoring by optimizing configuration and rules management. It aims to improve performance and manageability for large-scale Prometheus deployments.Prometheus Optimizer actively analyzes Prometheus configurations, including recording rules, alert rules, and Grafana dashboards. It identifies metrics that are unused or redundant, generating a tailored Prometheus configuration to drop these metrics effectively. The tool automates the process of identifying inefficiencies in metric collection, allowing you to focus on truly valuable data, reducing storage and processing overhead.
