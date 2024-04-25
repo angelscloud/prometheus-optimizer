@@ -8,6 +8,9 @@
 
 ## Overview
 Prometheus Optimizer enhances Prometheus monitoring by optimizing configuration and rules management. It aims to improve performance and manageability for large-scale Prometheus deployments.Prometheus Optimizer actively analyzes Prometheus configurations, including recording rules, alert rules, and Grafana dashboards. It identifies metrics that are unused or redundant, generating a tailored Prometheus configuration to drop these metrics effectively. The tool automates the process of identifying inefficiencies in metric collection, allowing you to focus on truly valuable data, reducing storage and processing overhead.
+
+![alt text](diagram.jpg)
+
 ## Features
 - **Optimization**: Dynamically optimizes Prometheus based on usage and metrics.
 - **Scalability**: Designed to handle large-scale Prometheus installations.

@@ -29,7 +29,7 @@ configMap:
       enabled: true  # Enable rule fetching.
       prometheus_discovery:
         namespace: "prometheus"  # Kubernetes namespace where Prometheus is deployed.
-        labels: "app=prometheus"  # Labels used to discover Prometheus pods.
+        labels: "app=prometheus, component=server"  # Labels used to discover Prometheus pods.
 
     # Slack configuration for sending notifications or reports.
     slack:
