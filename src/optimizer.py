@@ -19,6 +19,7 @@ with open('config.yaml') as f:
     yaml_config = yaml.safe_load(f)
 rules_file_path = '/tmp/prometheus-rules'
 
+
 def analyze_grafana_metrics():
     print("Analyzing Grafana")
     result = subprocess.run(["mimirtool", "analyze", "grafana", "--address", GRAFANA_ADDRESS, "--key", GRAFANA_API_TOKEN], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
