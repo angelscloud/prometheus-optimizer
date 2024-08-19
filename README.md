@@ -1,10 +1,11 @@
 # Prometheus Optimizer
 
-![Build](https://github.com/venomseven/prometheus-optimizer/actions/workflows/build.yml/badge.svg)
-![Release](https://github.com/venomseven/prometheus-optimizer/actions/workflows/release.yml/badge.svg)
-![Github stars](https://badgen.net/github/stars/venomseven/prometheus-optimizer?icon=github&label=stars)
-![Github forks](https://badgen.net/github/forks/venomseven/prometheus-optimizer?icon=github&label=forks)
-![Github issues](https://img.shields.io/github/issues/venomseven/prometheus-optimizer)
+![Build](https://github.com/angelscloud/prometheus-optimizer/actions/workflows/build.yml/badge.svg)
+![Release](https://github.com/angelscloud/prometheus-optimizer/actions/workflows/release.yml/badge.svg)
+![Github stars](https://badgen.net/github/stars/angelscloud/prometheus-optimizer?icon=github&label=stars)
+![Github forks](https://badgen.net/github/forks/angelscloud/prometheus-optimizer?icon=github&label=forks)
+![Github issues](https://img.shields.io/github/issues/angelscloud/prometheus-optimizer)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/prometheus-optimizer)](https://artifacthub.io/packages/search?repo=prometheus-optimizer)
 
 ## Overview
 Prometheus Optimizer enhances Prometheus monitoring by optimizing configuration and rules management. It aims to improve performance and manageability for large-scale Prometheus deployments.Prometheus Optimizer actively analyzes Prometheus configurations, including recording rules, alert rules, and Grafana dashboards. It identifies metrics that are unused or redundant, generating a tailored Prometheus configuration to drop these metrics effectively. The tool automates the process of identifying inefficiencies in metric collection, allowing you to focus on truly valuable data, reducing storage and processing overhead.
@@ -25,7 +26,7 @@ Prometheus Optimizer enhances Prometheus monitoring by optimizing configuration 
 ### Installation
 To install Prometheus Optimizer, add the Helm repository and deploy the chart to your Kubernetes cluster:
 ```bash
-helm repo add prometheus-optimizer https://venomseven.github.io/prometheus-optimizer/
+helm repo add prometheus-optimizer https://angelscloud.github.io/prometheus-optimizer/
 helm install prometheus-optimizer prometheus-optimizer/prometheus-optimizer
 ```
 
@@ -56,9 +57,9 @@ Contributions are what make the open-source community such an amazing place to l
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
-venomseven
+angelscloud
 
-**Project Link:** https://github.com/venomseven/prometheus-optimizer
+**Project Link:** https://github.com/angelscloud/prometheus-optimizer
 
 ## Acknowledgements
 - **Prometheus**
