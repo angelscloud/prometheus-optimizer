@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
             - name: prometheus-optimizer
-              image: ghcr.io/venomseven/prometheus-optimizer:latest
+              image: ghcr.io/angelscloud/prometheus-optimizer:latest
               imagePullPolicy: Always
               volumeMounts:
                 - name: config-volume
