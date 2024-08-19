@@ -2,7 +2,7 @@
 cronJob:
   schedule: "0 6 1 * *"  # Run at 06:00 on the first day of every month.
   image:
-    repository: ghcr.io/venomseven/prometheus-optimizer  # Image repository.
+    repository: ghcr.io/angelscloud/prometheus-optimizer  # Image repository.
     tag: latest  # Use the latest image tag.
     pullPolicy: Always  # Always pull the latest image.
 

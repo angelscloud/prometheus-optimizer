@@ -27,4 +27,4 @@ jobs:
           context: src/
           file: src/Dockerfile
           push: true
-          tags: ghcr.io/venomseven/prometheus-optimizer:latest
+          tags: ghcr.io/angelscloud/prometheus-optimizer:latest
